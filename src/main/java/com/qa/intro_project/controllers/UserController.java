@@ -35,18 +35,13 @@ public class UserController {
 		// we need to get the id out of the path, this can be done with the @PathVariable annotation
 		// - the 'name' attribute takes the name of the path variable
 		// - this then gets the path variable from the path and inserts it into the parameter 'int id'
-		for (int i = 0; i < users.size(); i++) {
-			if (this.users.get(i).getId() == id) {
-				return this.users.get(i);
-			}
-		}
-		return null; // we should return a 404 not found response code
 		
-//		User user = users.stream()
-//						  .filter(u -> u.getId() == id)
-//						  .findFirst()
-//						  .orElse(null);
-//		return user;
+		
+		User user = users.stream()
+						  .filter(u -> u.getId() == id)
+						  .findFirst()
+						  .orElse(null);
+		return user;
 	}
 	
 	// POST
@@ -62,14 +57,20 @@ public class UserController {
 	// PUT
 	@PutMapping(path = "/{id}")
 	public User updateUser(@RequestBody User user, @PathVariable(name = "id") int id) {
-		// TODO: Implement me
-		return null;
+		user.setId(id);
+		
+		users = users.stream().filter(u -> u.getId() != id).toList();
+		
+		users.add(user);
+		
+		return user;
 	}
 	
 	// DELETE
 	@DeleteMapping(path = "/{id}")
 	public User deleteUser(@PathVariable(name = "id") int id) {
-		// TODO: Implement me
+		users = users.stream().filter(u -> u.getId() != id).toList();
 		return null;
 	}
+	
 }
