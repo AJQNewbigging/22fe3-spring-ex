@@ -53,8 +53,13 @@ public class UserController {
 	
 	// PUT
 	@PutMapping(path = "/{id}")
-	public User updateUser(@RequestBody User user, @PathVariable(name = "id") int id) {
-		// TODO: In your implementation, ensure @Valid is called on the request body before updating
+	public User updateUser(@Valid @RequestBody User user, @PathVariable(name = "id") int id) {
+		user.setId(id);
+		
+		this.users = this.users.stream().filter(u -> u.getId() == id).toList();
+		
+		this.users.add(user);
+		
 		return null;
 	}
 	
